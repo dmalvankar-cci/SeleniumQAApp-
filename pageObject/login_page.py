@@ -30,8 +30,6 @@ class loginPage:
         pass_password.send_keys(password)
         press_loginBtn.click()
 
-
-
     @property
     def dashboarHeading_text(self):
         pass_lable = self._driver.find_element(*self.__dashboard_heading)
