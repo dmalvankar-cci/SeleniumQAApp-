@@ -1,13 +1,14 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
-
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as ec
 
 class loginPage:
     __url = "https://login-app-iota.vercel.app"
     __username_textField = (By.ID, 'username_textbox')
     __password_textField = (By.ID, 'password_textbox')
     __login_button = (By.CSS_SELECTOR, "button[type='submit']")
-    __error_lable_loginMsg = (By.XPATH, "//h1[normalize-space()='Contact List']")
+    __dashboard_heading = (By.XPATH, "//h1[normalize-space()='Contact List']")
     __login_error_msg = (By.XPATH, "//div[@class='text-center text-danger mb-2']")
 
     def __init__(self,driver:WebDriver):
@@ -32,13 +33,15 @@ class loginPage:
 
 
     @property
-    def _error_lable_text(self):
-        pass_lable = self._driver.find_element(*self.__error_lable_loginMsg)
+    def dashboarHeading_text(self):
+        pass_lable = self._driver.find_element(*self.__dashboard_heading)
         login_txt = pass_lable.text
         return login_txt
 
-    def is_error_lable_displayed(self)->bool:
-        pass_lable = self._driver.find_element(*self.__error_lable_loginMsg)
+    def is_dashboarHeading_text_displayed(self)->bool:
+        wait = WebDriverWait(self._driver, 10)
+        wait.until(ec.presence_of_element_located(self.__dashboard_heading))
+        pass_lable = self._driver.find_element(*self.__dashboard_heading)
         return pass_lable.is_displayed()
 
     @property
@@ -48,6 +51,8 @@ class loginPage:
         return loginError_txt
 
     def is_loginError_lable_displayed(self)->bool:
+        wait = WebDriverWait(self._driver, 10)
+        wait.until(ec.presence_of_element_located(self.__login_error_msg))
         login_error_txt = self._driver.find_element(*self.__login_error_msg)
         return login_error_txt.is_displayed()
 

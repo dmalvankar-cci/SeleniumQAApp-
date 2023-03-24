@@ -13,10 +13,9 @@ def test_valid_login_pageObject(driver,username,password,loggedIn_msg):
     login_page = loginPage(driver)
     login_page.open()
     login_page.perform_login(username,password)
-    time.sleep(5)
     assert login_page.current_url == "https://login-app-iota.vercel.app/dashboard"
-    assert login_page.is_error_lable_displayed(), 'Invalid Credentials'
-    assert login_page._error_lable_text == loggedIn_msg, "The login text is not matched"
+    assert login_page.is_dashboarHeading_text_displayed(), 'Invalid Credentials'
+    assert login_page.dashboarHeading_text == loggedIn_msg, "The login text is not matched"
 
 @pytest.mark.parametrize("username,password,expectedErrorMsg",
 [("xyz","admin123","Invalid Credentials")])
@@ -24,12 +23,9 @@ def test_valid_login_pageObject(driver,username,password,loggedIn_msg):
 def test_invalid_login_pageObject(driver,username,password,expectedErrorMsg):
     login_page = loginPage(driver)
     login_page.open()
-    time.sleep(5)
     login_page.perform_login(username,password)
-    time.sleep(5)
     assert login_page.current_url == "https://login-app-iota.vercel.app/login"
     assert login_page.is_loginError_lable_displayed(), 'Invalid Credentials'
-    time.sleep(2)
     assert login_page.loginError_lable_text == expectedErrorMsg, "The login error is not matched"
 
 
