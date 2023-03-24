@@ -11,10 +11,11 @@ from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
 
 #Open browser
-@pytest.fixture(params=["chrome","firefox","edge"])
+@pytest.fixture
+# @pytest.fixture(params=["chrome","firefox","edge"])
 def driver(request):
-    # browser=request.config.getoption("--browser")
-    browser=request.param
+    browser=request.config.getoption("--browser")
+    # browser=request.param
     print(f'Creating Driver for {browser} Broswer')
     # Open Browser
     if browser == "chrome":

@@ -3,106 +3,42 @@ import time
 import pytest
 from selenium.webdriver.common.by import By
 
-
-@pytest.mark.parametrize("username,password,expected_error_msg",
-[("incorrectUser","Password123","Invalid Credentials"),
-("student","incorrectPassword","Invalid Credentials"),
-("xyz","xyz","Invalid Credentials")])
-@pytest.mark.invalid_username_password
-def test_invalid_username_password(driver,username,password,expected_error_msg):
-    """
-    Test : A user with invalid username should not able to login 
-    URL : https://login-app-iota.vercel.app
-    """
-    # Navigate to Site URL
-    driver.get("https://login-app-iota.vercel.app")
-    time.sleep(3)
-
-    # Validate if default URL is pointing to login route
-    url = driver.current_url
-    assert url == "https://login-app-iota.vercel.app/login", "The url is not matching with the expected one"
-
-    # locate username element
-    uname = driver.find_element(By.ID, 'username_textbox')
-
-    # locate password element
-    passwrd = driver.find_element(By.ID, 'password_textbox')
-
-    # locate Login button
-    login_btn = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
-
-    # enter INValid username
-    uname.send_keys(username)
-
-    # enter valid password
-    passwrd.send_keys(password)
-
-    # click on login button
-    login_btn.click()
-
-    # Validate logged in URL
-    no_logged_url = driver.current_url
-    assert no_logged_url == "https://login-app-iota.vercel.app/login", "The URL is not matching with the About URL"
-
-    # Validate login error message
-    login_error_msg = driver.find_element(By.XPATH, "//div[@class='text-center text-danger mb-2']")
-    login_error_txt = login_error_msg.text
-    assert login_error_msg.is_displayed(), 'Invalid Credentials'
-    assert login_error_txt == expected_error_msg, "The login error is not matched"
-
-    time.sleep(3)
-
+from pageObject.login_page import loginPage
 
 
 @pytest.mark.parametrize("username,password,loggedIn_msg",
 [("admin","admin123","Contact List")])
-@pytest.mark.valid_login
-def test_valid_login(driver,username,password,loggedIn_msg):
-    """
-    Test : A user with valid credentials should be able to login successfully
-    URL : https://login-app-iota.vercel.app
-    """
-
-    # Navigate to Site URL
-    driver.get("https://login-app-iota.vercel.app")
-    time.sleep(3)
-
-    # Validate if default URL is pointing to login route
-    url = driver.current_url
-    assert url == "https://login-app-iota.vercel.app/login", "The url is not matching with the expected one"
-
-
-    # locate username element
-    uname = driver.find_element(By.ID, 'username_textbox')
-
-    # locate password element
-    passwrd = driver.find_element(By.ID, 'password_textbox')
-
-    # locate Login button
-    login_btn = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
-
-    # enter Valid username
-    uname.send_keys(username)
-
-    # enter valid password
-    passwrd.send_keys(password)
-
-    # click on login button
-    login_btn.click()
-
+@pytest.mark.valid_login_wd_page_object
+def test_valid_login_pageObject(driver,username,password,loggedIn_msg):
+    login_page = loginPage(driver)
+    login_page.open()
+    login_page.perform_login(username,password)
     time.sleep(5)
+    assert login_page.current_url == "https://login-app-iota.vercel.app/dashboard"
+    assert login_page.is_error_lable_displayed(), 'Invalid Credentials'
+    assert login_page._error_lable_text == loggedIn_msg, "The login text is not matched"
 
-    # Validate logged in URL
-    about_url = driver.current_url
-    assert about_url == "https://login-app-iota.vercel.app/dashboard", "The URL is not matching with the About URL"
-
-    # Validate login message
-    login_msg = driver.find_element(By.CSS_SELECTOR, ".text-center.text-primary.mb-3")
-    login_txt = login_msg.text
-    assert login_msg.is_displayed(), "The welcome message is not displayed"
-    assert login_txt == loggedIn_msg, "The login text is not matched"
-
+@pytest.mark.parametrize("username,password,expectedErrorMsg",
+[("xyz","admin123","Invalid Credentials")])
+@pytest.mark.Invalid_login_wd_page_object
+def test_invalid_login_pageObject(driver,username,password,expectedErrorMsg):
+    login_page = loginPage(driver)
+    login_page.open()
     time.sleep(5)
+    login_page.perform_login(username,password)
+    time.sleep(5)
+    assert login_page.current_url == "https://login-app-iota.vercel.app/login"
+    assert login_page.is_loginError_lable_displayed(), 'Invalid Credentials'
+    time.sleep(2)
+    assert login_page.loginError_lable_text == expectedErrorMsg, "The login error is not matched"
+
+
+
+
+
+
+
+
 
 
 
