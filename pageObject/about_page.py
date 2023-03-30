@@ -15,8 +15,6 @@ class aboutPage:
     def hit_about(self):
         self._driver.find_element(*self.__about_lnk).click()
 
-    def logout_action(self):
-        self._driver.find_element(*self.__logout_lnk).click()
 
     @property
     def heading_text(self):
