@@ -13,6 +13,7 @@ class tasksPage:
 
     __task_textBox = (By.ID, 'task-input')
     __task_addBtn = (By.CSS_SELECTOR, "button[class='btn btn-primary mb-2 ml-2 col-2']")
+    __first_record = (By.XPATH, "//div[@class='border border-1 row m-2 p-1 rounded align-items-center bg-light']")
 
 
     def __init__(self,driver:WebDriver):
@@ -52,6 +53,12 @@ class tasksPage:
     def pass_task(self, task_name):
         textbox = self._driver.find_element(*self.__task_textBox)
         textbox.send_keys(task_name)
+
+    def is_first_record_displayed(self) -> bool:
+        wait = WebDriverWait(self._driver, 10)
+        wait.until(ec.presence_of_element_located(self.__first_record))
+        record_one = self._driver.find_element(*self.__first_record)
+        return record_one.is_displayed()
 
 
 

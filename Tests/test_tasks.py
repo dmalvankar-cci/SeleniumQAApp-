@@ -42,14 +42,6 @@ def test_tasks_menu_verification(username, password, head_text, driver):
     assert tasks_page.is_instruction_text_displayed(), 'Instruction is not displayed'
 
 
-
-
-
-
-
-
-
-
 def test_addEmpty_task(test_tasks_menu_verification, driver):
 
     """
@@ -93,6 +85,8 @@ def test_add_first_task(test_tasks_menu_verification, driver, task_name):
 
     # click Add button
     tasks_page.click_add()
+
+    tasks_page.is_first_record_displayed()
 
 
 
