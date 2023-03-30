@@ -5,13 +5,12 @@ from pageObject.logout_page import logoutPage
 from pageObject.tasks_page import tasksPage
 
 
-
-
-
 @pytest.fixture
-@pytest.mark.parametrize("username, password, head_text",
-[("admin", "admin123", "TASK TRACKER")])
-def test_tasks_menu_verification(username, password, head_text, driver):
+# @pytest.fixture(params=["username", "password", "head_text"], ids=["admin", "admin123", "TASK TRACKER"])
+# @pytest.fixture(params=["admin", "admin123", "TASK TRACKER"])
+# @pytest.mark.parametrize("username, password, head_text",
+# [("admin", "admin123", "TASK TRACKER")])
+def test_tasks_menu_verification(driver):
     """
     Test : Verify if the task tracker is opened onclick of Tasks menu
     URL : https://login-app-iota.vercel.app/task
@@ -25,7 +24,7 @@ def test_tasks_menu_verification(username, password, head_text, driver):
     login_page.open()
 
     # Login to the site
-    login_page.perform_login(username, password)
+    login_page.perform_login("admin", "admin123")
 
     # Click on the Tasks menu
     tasks_page.hit_tasks()
@@ -35,11 +34,13 @@ def test_tasks_menu_verification(username, password, head_text, driver):
 
     # Verify the heading
     assert tasks_page.is_heading_text_displayed(), 'text is not there'
-    assert tasks_page.heading_text == head_text, "The heading text is not matched"
+    assert tasks_page.heading_text == "TASK TRACKER", "The heading text is not matched"
 
 
     # Verify the Instructions are shown
     assert tasks_page.is_instruction_text_displayed(), 'Instruction is not displayed'
+
+
 
 
 def test_addEmpty_task(test_tasks_menu_verification, driver):
