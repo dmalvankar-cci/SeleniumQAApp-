@@ -5,6 +5,49 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 
+from pageObject.contact_page import contactPage
+from pageObject.login_page import loginPage
+from pageObject.logout_page import logoutPage
+
+
+@pytest.mark.testme
+# @pytest.fixture(params=["username", "password", "head_text"], ids=["admin", "admin123", "TASK TRACKER"])
+# @pytest.fixture(params=["admin", "admin123", "TASK TRACKER"])
+# @pytest.mark.parametrize("username, password, head_text",
+# [("admin", "admin123", "TASK TRACKER")])
+def test_contact_menu_verification(driver):
+    """
+    Test : Verify if the task tracker is opened onclick of Tasks menu
+    URL : https://login-app-iota.vercel.app/task
+    """
+    # Use the page objects
+    contact_page = contactPage(driver)
+    login_page = loginPage(driver)
+    logout_page = logoutPage(driver)
+
+    # Navigate to the site
+    login_page.open()
+
+    # Login to the site
+    login_page.perform_login("admin", "admin123")
+
+    # Click on the Contact menu
+    contact_page.hit_contact()
+
+    # Verify the URL
+    assert login_page.current_url == "https://login-app-iota.vercel.app/contact"
+
+    # Verify the heading
+    assert contact_page.is_heading_text_displayed(), 'text is not there'
+    assert contact_page.contact_heading_text == "ADD CONTACTS", "The heading text is not matched"
+
+    # Verify the table and records are shown
+    assert contact_page.is_contact_table_displayed(), 'table is not there'
+
+
+
+
+
 @pytest.mark.validate_contact_page
 def test_contact_form():
     """
