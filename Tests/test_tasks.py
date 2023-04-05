@@ -1,13 +1,13 @@
 import pytest
 from selenium.webdriver.common.alert import Alert
+
+from Tests import readExcelFile
 from pageObject.login_page import loginPage
-from pageObject.logout_page import logoutPage
 from pageObject.tasks_page import tasksPage
 
 
+
 @pytest.fixture
-# @pytest.fixture(params=["username", "password", "head_text"], ids=["admin", "admin123", "TASK TRACKER"])
-# @pytest.fixture(params=["admin", "admin123", "TASK TRACKER"])
 # @pytest.mark.parametrize("username, password, head_text",
 # [("admin", "admin123", "TASK TRACKER")])
 def test_tasks_menu_verification(driver):
@@ -18,13 +18,15 @@ def test_tasks_menu_verification(driver):
     # Use the page objects
     tasks_page = tasksPage(driver)
     login_page = loginPage(driver)
-    logout_page = logoutPage(driver)
 
+    username = readExcelFile.read_data(2, 1)
+    password = readExcelFile.read_data(2, 2)
+    head_text = readExcelFile.read_data(2, 3)
     # Navigate to the site
     login_page.open()
 
     # Login to the site
-    login_page.perform_login("admin", "admin123")
+    login_page.perform_login(username, password)
 
     # Click on the Tasks menu
     tasks_page.hit_tasks()
@@ -34,7 +36,7 @@ def test_tasks_menu_verification(driver):
 
     # Verify the heading
     assert tasks_page.is_heading_text_displayed(), 'text is not there'
-    assert tasks_page.heading_text == "TASK TRACKER", "The heading text is not matched"
+    assert tasks_page.heading_text == head_text, "The heading text is not matched"
 
 
     # Verify the Instructions are shown
@@ -43,7 +45,9 @@ def test_tasks_menu_verification(driver):
 
 
 
+@pytest.mark.testme
 def test_addEmpty_task(test_tasks_menu_verification, driver):
+
 
     """
     Test : Verify if the "Fill today's time sheet" text is already entered in the text field
@@ -114,7 +118,7 @@ def test_action_icons_visibility(driver, test_new_record_visibility):
     """
     # Verify the edit, done, delete icons are displayed
     tasks_page = tasksPage(driver)
-    tasks_page.is_action_icons_displayed()
+    assert tasks_page.is_action_icons_displayed == 3, "Didnt find the all icons"
 
 
 @pytest.fixture

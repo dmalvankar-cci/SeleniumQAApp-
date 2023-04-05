@@ -1,6 +1,5 @@
 # Import packages
 import pytest
-
 from pageObject.about_page import aboutPage
 from pageObject.home_page import homePage
 from pageObject.login_page import loginPage

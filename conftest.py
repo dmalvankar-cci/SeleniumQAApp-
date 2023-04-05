@@ -19,7 +19,7 @@ def driver(request):
     print(f'Creating Driver for {browser} Broswer')
     # Open Browser
     if browser == "chrome":
-        browser_driver=webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+        browser_driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
     elif browser == "firefox":
         browser_driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
     elif browser == "edge":
@@ -35,5 +35,7 @@ def driver(request):
 
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", help="Provide browser as chrome, Edge or firefox")
+
+
 
 

@@ -8,9 +8,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 from pageObject.contact_page import contactPage
 from pageObject.login_page import loginPage
 from pageObject.logout_page import logoutPage
+from Tests import readExcelFile
 
 
-@pytest.mark.testme
+@pytest.fixture
 # @pytest.fixture(params=["username", "password", "head_text"], ids=["admin", "admin123", "TASK TRACKER"])
 # @pytest.fixture(params=["admin", "admin123", "TASK TRACKER"])
 # @pytest.mark.parametrize("username, password, head_text",
@@ -20,6 +21,9 @@ def test_contact_menu_verification(driver):
     Test : Verify if the task tracker is opened onclick of Tasks menu
     URL : https://login-app-iota.vercel.app/task
     """
+    username = readExcelFile.read_data(2, 1)
+    password = readExcelFile.read_data(2, 2)
+
     # Use the page objects
     contact_page = contactPage(driver)
     login_page = loginPage(driver)
@@ -29,7 +33,7 @@ def test_contact_menu_verification(driver):
     login_page.open()
 
     # Login to the site
-    login_page.perform_login("admin", "admin123")
+    login_page.perform_login(username, password)
 
     # Click on the Contact menu
     contact_page.hit_contact()
@@ -45,71 +49,84 @@ def test_contact_menu_verification(driver):
     assert contact_page.is_contact_table_displayed(), 'table is not there'
 
 
-
-
-
-@pytest.mark.validate_contact_page
-def test_contact_form():
+@pytest.fixture
+def test_form_is_opened(driver,test_contact_menu_verification):
     """
-    Test : A user is logged in and navigating to the contact form thru the menu
-    URL : https://login-app-iota.vercel.app
+    Test : Verify onclick of add '+' button form is displayed with submit button
+    URL : https://login-app-iota.vercel.app/contact
     """
-    # Open Browser
-    driver = webdriver.Chrome(ChromeDriverManager().install())
-    driver.maximize_window()
 
-    # Navigate to Site URL
-    driver.get("https://login-app-iota.vercel.app")
-    time.sleep(3)
+    # Click on the '+'
+    contact_page = contactPage(driver)
+    contact_page.hit_plus_icon()
 
-    # Validate if default URL is pointing to login route
-    url = driver.current_url
-    assert url == "https://login-app-iota.vercel.app/login", "The url is not matching with the expected one"
+    # Verify if the all form fields are shown with submit button
+    assert contact_page.is_form_fields_displayed == 5, "The all fields are not found"
+    contact_page.is_submit_btn_displayed()
 
-    # locate username element
-    uname = driver.find_element(By.ID, 'username_textbox')
 
-    # locate password element
-    passwrd = driver.find_element(By.ID, 'password_textbox')
 
-    # locate Login button
-    login_btn = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
+def test_empty_form_submission(driver,test_form_is_opened):
+    """
+    Test : Verify empty form submission
+    Test : Verify email field has validation
+    URL : https://login-app-iota.vercel.app/contact
+    """
 
-    # enter Valid username
-    uname.send_keys('admin')
+    # Click on sumbit button without entering any data in the form
+    contact_page = contactPage(driver)
+    contact_page.hit_submit_btn()
 
-    # enter valid password
-    passwrd.send_keys('admin123')
+    # Verify if the "First name" field got the error
+    assert contact_page.verify_name_field_error == "Please fill out this field.", "The empty field error is not shown"
 
-    # click on login button
-    login_btn.click()
 
-    # Validate logged in URL
-    about_url = driver.current_url
-    assert about_url == "https://login-app-iota.vercel.app/about", "The URL is not matching with the About URL"
 
-    # Validate login message
-    login_msg = driver.find_element(By.XPATH, "//h1[normalize-space()='Welcome to Selenium Learning Group']")
-    login_txt = login_msg.text
-    assert login_msg.is_displayed(), "The welcome message is not displayed"
-    assert login_txt == "Welcome to Selenium Learning Group", "The login text is not matched"
 
-    # Click on the contact menu
-    contact_menu = driver.find_element(By.LINK_TEXT, 'Contact')
-    contact_menu.click()
 
-    # Validate the contact page URl
-    contact_url = driver.current_url
-    assert contact_url == "https://login-app-iota.vercel.app/contact", "The contact page URL is not matched"
+def test_validate_email_field(driver, test_form_is_opened):
+    """
+    Test : Validate the phone number and email field
+    URL : https://login-app-iota.vercel.app/contact
+    """
+    fname = readExcelFile.read_data_for_contact_form(2,1)
+    lname = readExcelFile.read_data_for_contact_form(2,2)
+    email = readExcelFile.read_data_for_contact_form(2,3)
+    phone = readExcelFile.read_data_for_contact_form(2,4)
+    msg = readExcelFile.read_data_for_contact_form(2,5)
+    # Enter "test" in all fields
 
-    # Validate the contact menu is active
-    menu_color = contact_menu.value_of_css_property('color')
-    assert menu_color == 'rgba(255, 255, 255, 0.56)', "The active link color is not matched"
+    contact_page = contactPage(driver)
+    contact_page.pass_data_in_fields(fname, lname, email, phone, msg)
 
-    time.sleep(3)
-    driver.quit()
+    # Click Submit
+    contact_page.hit_submit_btn()
 
-@pytest.mark.form_submission
+    # Validate if the errors are shown for the email
+    assert contact_page.verify_email_field_error == "Please enter an email address.", "The email field validation is not added"
+
+@pytest.mark.testme
+def test_verify_form_submission(driver,test_form_is_opened):
+    """
+    Test : Enter valid data in all fields and submit the form
+    URL : https://login-app-iota.vercel.app/contact
+    """
+    fname = readExcelFile.read_data_for_contact_form(3, 1)
+    lname = readExcelFile.read_data_for_contact_form(3, 2)
+    email = readExcelFile.read_data_for_contact_form(3, 3)
+    phone = readExcelFile.read_data_for_contact_form(3, 4)
+    msg = readExcelFile.read_data_for_contact_form(3, 5)
+
+    # Enter "test" in all fields except in email and phone number
+    # Enter "test@test.com" in email field
+    # Enter "9874512036" in phone number field'
+    contact_page = contactPage(driver)
+    contact_page.pass_data_in_fields(fname, lname, email, phone, msg)
+
+    # Click submit
+    contact_page.hit_submit_btn()
+
+
 def test_contact_form_submission():
     """
     Test : A user is logged in and filling the contact form and submits the form

@@ -84,12 +84,12 @@ class tasksPage:
     def instruction_not_found(self):
         return ec.visibility_of_element_located(self.__instructions)
 
-    def is_action_icons_displayed(self) -> bool:
+    @property
+    def is_action_icons_displayed(self) -> int:
         wait = WebDriverWait(self._driver, 10)
-        wait.until(ec.visibility_of_all_elements_located(self.__task_allIcons))
+        wait.until(ec.presence_of_all_elements_located(self.__task_allIcons))
         icons = self._driver.find_elements(*self.__task_allIcons)
-        # if you do print instead return all three elements will be shown
-        return icons
+        return len(icons)
 
 
     def verify_edit(self):
