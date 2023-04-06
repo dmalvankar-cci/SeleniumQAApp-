@@ -45,7 +45,7 @@ def test_tasks_menu_verification(driver):
 
 
 
-@pytest.mark.testme
+
 def test_addEmpty_task(test_tasks_menu_verification, driver):
 
 
@@ -106,7 +106,7 @@ def test_new_record_visibility(driver,test_add_first_task):
     # Verify the Instructions aren't displayed
     tasks_page.instruction_not_found()
     # Verify the newly added record is shown below
-    tasks_page.is_first_record_displayed()
+    assert tasks_page.is_first_record_displayed(), "The first record is not displayed"
     assert tasks_page.first_record == "My first task", "record one is not proper"
 
 
@@ -138,7 +138,7 @@ def test_verify_editing_record(driver,test_action_icons_visibility):
     # Click Save
     tasks_page.click_save()
     # Verify if the record is updated
-    tasks_page.updated_text_is_displayed()
+    assert tasks_page.updated_text_is_displayed(), "The updated text isnt displayed"
     assert tasks_page.updated_text == "My Second Task", "The text is not updated"
 
 
@@ -155,7 +155,6 @@ def test_verify_done_record(driver, test_verify_editing_record):
     tasks_page.click_done()
 
     # Verify if the record is strikethrough
-    tasks_page.verify_strikethrough()
     assert tasks_page.verify_strikethrough() == "line-through rgb(33, 37, 41)", "The strikethrough is not done"
 
 
@@ -191,7 +190,7 @@ def test_add_multiple_records(driver, test_action_icons_visibility):
     tasks_page.click_add()
 
     # verify the newly added records are shown below
-    tasks_page.is_third_record_displayed()
+    assert tasks_page.is_third_record_displayed(), "The third record isnt displayed"
     assert tasks_page.third_record == "My third task", "record three is not proper"
 
     # enter "My fourth task" in the text field
@@ -199,7 +198,7 @@ def test_add_multiple_records(driver, test_action_icons_visibility):
     # click add button
     tasks_page.click_add()
     # verify the newly added records are shown below
-    tasks_page.is_fourth_record_displayed()
+    assert tasks_page.is_fourth_record_displayed(), "The fourth record isnt displayed"
     assert tasks_page.fourth_record == "My fourth task", "record four is not proper"
 
     # enter "My fifth task" in the text field
@@ -207,7 +206,7 @@ def test_add_multiple_records(driver, test_action_icons_visibility):
     # click add button
     tasks_page.click_add()
     # verify the newly added records are shown below
-    tasks_page.is_fifth_record_displayed()
+    assert tasks_page.is_fifth_record_displayed(), "The fifth record isnt displayed"
     assert tasks_page.fifth_record == "My fifth task", "record five is not proper"
 
     # verify the instructions arent displayed
@@ -233,7 +232,7 @@ def test_actions_work_with_multiple_records(driver,test_add_multiple_records ):
     tasks_page.click_save()
 
     # Verify the updated task is shown
-    tasks_page.updated_text_is_displayed_for_third_record()
+    assert tasks_page.updated_text_is_displayed_for_third_record(), "The updated text isnt displayed"
     assert tasks_page.updated_text_for_third_record == "My third-edited task", "The text is not updated"
 
     # click done for the "My fourth task"

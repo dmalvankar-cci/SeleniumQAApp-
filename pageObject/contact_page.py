@@ -22,6 +22,9 @@ class contactPage:
 
     __submit_btn = (By.CSS_SELECTOR, "button[type='submit']")
 
+    __table_rows = (By.XPATH, "//*[@class= 'table']/tbody/tr")
+    __table_body = (By.XPATH, "//tbody")
+
     def __init__(self, driver: WebDriver):
         self._driver = driver
 
@@ -86,3 +89,14 @@ class contactPage:
     def verify_email_field_error(self):
         emailError = self._driver.find_element(*self.__email).get_attribute("validationMessage")
         return emailError
+
+    @property
+    def table_rows_count(self):
+        return len(self._driver.find_elements(*self.__table_rows))
+
+
+
+
+
+
+
