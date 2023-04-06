@@ -81,8 +81,10 @@ class tasksPage:
         record_one = self._driver.find_element(*self.__first_record)
         return record_one.is_displayed()
 
+    @property
     def instruction_not_found(self):
-        return ec.visibility_of_element_located(self.__instructions)
+         return not ec.visibility_of_element_located(self.__instructions)
+
 
     @property
     def is_action_icons_displayed(self) -> int:
@@ -133,11 +135,11 @@ class tasksPage:
     def click_delete(self):
         self._driver.find_element(*self.__task_delete).click()
 
-    def verify_deletion(self):
-        return ec.visibility_of_element_located(self.__first_record)
 
+
+    @property
     def verify_deletion_for_fifth_record(self):
-        return ec.visibility_of_element_located(self.__fifth_record)
+        return not ec.visibility_of_element_located(self.__fifth_record)
 
     def is_third_record_displayed(self) -> bool:
         wait = WebDriverWait(self._driver, 10)

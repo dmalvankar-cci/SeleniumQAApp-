@@ -1,5 +1,3 @@
-import openpyxl
-import pytest
 from openpyxl.reader.excel import load_workbook
 
 

@@ -48,6 +48,7 @@ class contactPage:
         wait.until(ec.presence_of_element_located(self.__table_contact))
         table = self._driver.find_element(*self.__table_contact)
         return table.is_displayed()
+
     def hit_plus_icon(self):
         self._driver.find_element(*self.__plus_icon).click()
 
@@ -57,11 +58,13 @@ class contactPage:
         wait.until(ec.presence_of_all_elements_located(self.__form_elements))
         form_fields = self._driver.find_elements(*self.__form_elements)
         return len(form_fields)
+
     def is_submit_btn_displayed(self):
         wait = WebDriverWait(self._driver, 10)
         wait.until(ec.presence_of_element_located(self.__submit_btn))
         submit_btn = self._driver.find_element(*self.__submit_btn)
         return submit_btn.is_displayed()
+
     def hit_submit_btn(self):
         self._driver.find_element(*self.__submit_btn).click()
 

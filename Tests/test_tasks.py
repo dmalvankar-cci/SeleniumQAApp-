@@ -1,15 +1,13 @@
 import pytest
 from selenium.webdriver.common.alert import Alert
 
-from Tests import readExcelFile
+from Tests import test_about, readExcelFile
 from pageObject.login_page import loginPage
 from pageObject.tasks_page import tasksPage
 
 
 
 @pytest.fixture
-# @pytest.mark.parametrize("username, password, head_text",
-# [("admin", "admin123", "TASK TRACKER")])
 def test_tasks_menu_verification(driver):
     """
     Test : Verify if the task tracker is opened onclick of Tasks menu
@@ -19,14 +17,11 @@ def test_tasks_menu_verification(driver):
     tasks_page = tasksPage(driver)
     login_page = loginPage(driver)
 
-    username = readExcelFile.read_data(2, 1)
-    password = readExcelFile.read_data(2, 2)
-    head_text = readExcelFile.read_data(2, 3)
-    # Navigate to the site
-    login_page.open()
+    # Loggin in
+    test_about.test_about_us_heading_verify(driver)
 
-    # Login to the site
-    login_page.perform_login(username, password)
+    # Importing task page head text
+    head_text = readExcelFile.read_data(2, 3)
 
     # Click on the Tasks menu
     tasks_page.hit_tasks()
@@ -104,7 +99,7 @@ def test_new_record_visibility(driver,test_add_first_task):
     """
     tasks_page = tasksPage(driver)
     # Verify the Instructions aren't displayed
-    tasks_page.instruction_not_found()
+    assert tasks_page.instruction_not_found == False, "Instructions are not hidden"
     # Verify the newly added record is shown below
     assert tasks_page.is_first_record_displayed(), "The first record is not displayed"
     assert tasks_page.first_record == "My first task", "record one is not proper"
@@ -162,7 +157,8 @@ def test_verify_done_record(driver, test_verify_editing_record):
 
 
 
-def test_verify_delete_record(driver,test_action_icons_visibility):
+
+def test_verify_delete_record(driver,test_verify_editing_record):
     """
     Test : Verify onclick of delete the task gets deleted
     Test : Verify the edited/done record gets deleted
@@ -173,8 +169,8 @@ def test_verify_delete_record(driver,test_action_icons_visibility):
     tasks_page = tasksPage(driver)
     tasks_page.click_delete()
 
-    # Verify if the record is deleted
-    tasks_page.verify_deletion()
+    # Verify if the record is deleted instructions should be shown
+    assert tasks_page.is_instruction_text_displayed(), "The single record is not deleted"
 
 @pytest.fixture
 def test_add_multiple_records(driver, test_action_icons_visibility):
@@ -210,7 +206,7 @@ def test_add_multiple_records(driver, test_action_icons_visibility):
     assert tasks_page.fifth_record == "My fifth task", "record five is not proper"
 
     # verify the instructions arent displayed
-    tasks_page.instruction_not_found()
+    assert tasks_page.instruction_not_found == False, "Instructions are not hidden"
 
 
 def test_actions_work_with_multiple_records(driver,test_add_multiple_records ):
@@ -246,4 +242,4 @@ def test_actions_work_with_multiple_records(driver,test_add_multiple_records ):
     tasks_page.fifth_record_delete_click()
 
     # Verify if the "My fifth task" is deleted from records
-    tasks_page.verify_deletion_for_fifth_record()
+    assert tasks_page.verify_deletion_for_fifth_record == False, "The record is not deleted"

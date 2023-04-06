@@ -10,6 +10,7 @@ class loginPage:
     __login_button = (By.CSS_SELECTOR, "button[type='submit']")
     __dashboard_heading = (By.XPATH, "//h1[normalize-space()='Contact List']")
     __login_error_msg = (By.XPATH, "//div[@class='text-center text-danger mb-2']")
+    __contact_lnk = (By.LINK_TEXT, 'Contact')
 
     def __init__(self,driver:WebDriver):
         self._driver = driver
@@ -53,6 +54,10 @@ class loginPage:
         wait.until(ec.presence_of_element_located(self.__login_error_msg))
         login_error_txt = self._driver.find_element(*self.__login_error_msg)
         return login_error_txt.is_displayed()
+
+    @property
+    def contact_not_found(self):
+        return not ec.visibility_of_element_located(self.__contact_lnk)
 
 
 

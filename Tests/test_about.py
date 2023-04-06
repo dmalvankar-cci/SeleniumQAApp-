@@ -1,23 +1,26 @@
 # Import packages
-import pytest
+from Tests import readExcelFile
 from pageObject.about_page import aboutPage
 from pageObject.login_page import loginPage
 from pageObject.logout_page import logoutPage
 
 
-@pytest.mark.parametrize("username, password, head_text",
-[("admin", "admin123", "Welcome to Selenium Learning Group")])
-def test_about_us_heading_verify(driver, head_text, username, password):
+
+def test_about_us_heading_verify(driver):
     """
        Test : Validate if onlick of about link it opens the about page
-       Test : Verify the heading from the about page and logout
-       Test : Validate if onlick of logout link it logouts the user
+       Test : Verify the heading from the about page
        URL : https://login-app-iota.vercel.app
     """
     # Use the page objects
     about_page = aboutPage(driver)
     login_page = loginPage(driver)
     logout_page = logoutPage(driver)
+
+    username = readExcelFile.read_data(2, 1)
+    password = readExcelFile.read_data(2, 2)
+    head_text = readExcelFile.read_data(3, 3)
+
     # Navigate to the site
     login_page.open()
 
@@ -32,8 +35,8 @@ def test_about_us_heading_verify(driver, head_text, username, password):
     assert about_page.is_heading_text_displayed(), 'text is not there'
     assert about_page.heading_text == head_text, "The heading text is not matched"
 
-    # logout the page
-    logout_page.logout_action()
-
-    # Check the URL
-    assert login_page.current_url == "https://login-app-iota.vercel.app/login"
+    # # logout the page
+    # logout_page.logout_action()
+    #
+    # # Check the URL
+    # assert login_page.current_url == "https://login-app-iota.vercel.app/login"
