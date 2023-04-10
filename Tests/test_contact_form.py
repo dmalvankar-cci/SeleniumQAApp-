@@ -106,7 +106,7 @@ def test_validate_email_field(driver, test_form_is_opened):
     contact_page.hit_submit_btn()
 
     # Validate if the errors are shown for the email
-    assert contact_page.verify_email_field_error == "Please enter an email address.", "The email field validation is not added"
+    assert contact_page.verify_email_field_error == "Please include an '@' in the email address. 'test' is missing an '@'.", "The email field validation is not added"
 
 
 

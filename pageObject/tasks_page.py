@@ -1,4 +1,4 @@
-import pytest
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
@@ -32,6 +32,8 @@ class tasksPage:
     __the_updated_text = (By.XPATH, "//div[contains(text(),'My Second Task')]")
 
     __the_updated_text_for_third_record = (By.XPATH, "//div[contains(text(),'My third-edited task')]")
+
+
 
     def __init__(self,driver:WebDriver):
         self._driver = driver
@@ -191,6 +193,9 @@ class tasksPage:
     def fifth_record_delete_click(self) -> bool:
         self._driver.find_element(*self.__fifth_record)
         self._driver.find_element(*self.__task_delete).click()
+
+
+       
 
 
 
