@@ -57,7 +57,8 @@ class loginPage:
 
     @property
     def contact_not_found(self):
-        return not ec.visibility_of_element_located(self.__contact_lnk)
+        wait = WebDriverWait(self._driver, 10)
+        return wait.until(ec.invisibility_of_element_located(self.__contact_lnk))
 
 
 

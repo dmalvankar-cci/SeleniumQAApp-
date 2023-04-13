@@ -17,9 +17,9 @@ class tasksPage:
     __task_addBtn = (By.CSS_SELECTOR, "button[class='btn btn-primary mb-2 ml-2 col-2']")
     __first_record = (By.XPATH, "//div[@class='border border-1 row m-2 p-1 rounded align-items-center bg-light']")
 
-    __third_record = (By.XPATH, "//div[contains(text(),'My third task')]")
-    __fourth_record = (By.XPATH, "//div[contains(text(),'My fourth task')]")
-    __fifth_record = (By.XPATH, "//div[contains(text(),'My fifth task')]")
+    __third_record = (By.XPATH, "//div[@class='col']/div[@id='mx-2 border border-5']/div[2]")
+    __fourth_record = (By.XPATH, "//div[@class='col']/div[@id='mx-2 border border-5']/div[3]")
+    __fifth_record = (By.XPATH, "//div[@class='col']/div[@id='mx-2 border border-5']/div[4]")
 
 
     __task_allIcons = (By.XPATH, "//div[@class='border border-1 row m-2 p-1 rounded align-items-center bg-light']//div[@class='col']//*[name()='svg']")
@@ -84,8 +84,9 @@ class tasksPage:
         return record_one.is_displayed()
 
     @property
-    def instruction_not_found(self):
-         return not ec.visibility_of_element_located(self.__instructions)
+    def is_instruction_visible(self):
+        wait = WebDriverWait(self._driver, 10)
+        return wait.until(ec.invisibility_of_element_located(self.__instructions))
 
 
     @property
@@ -124,6 +125,7 @@ class tasksPage:
     def updated_text_for_third_record(self):
         updated_task_text = self._driver.find_element(*self.__the_updated_text_for_third_record).text
         return updated_task_text
+
     def click_done(self):
        self._driver.find_element(*self.__task_done). click()
 
@@ -140,8 +142,9 @@ class tasksPage:
 
 
     @property
-    def verify_deletion_for_fifth_record(self):
-        return not ec.visibility_of_element_located(self.__fifth_record)
+    def verify_deletion_for_fifth_record(self) -> bool:
+        wait = WebDriverWait(self._driver, 10)
+        return wait.until(ec.invisibility_of_element_located(self.__fifth_record))
 
     def is_third_record_displayed(self) -> bool:
         wait = WebDriverWait(self._driver, 10)
@@ -182,17 +185,16 @@ class tasksPage:
         return record_five
 
     def third_record_edit_click(self):
-        self._driver.find_element(*self.__third_record)
-        self._driver.find_element(*self.__task_edit).click()
+        self._driver.find_element(*self.__third_record).find_element(*self.__task_edit).click()
 
 
-    def fourth_record_done_click(self) -> bool:
-        self._driver.find_element(*self.__fourth_record)
-        self._driver.find_element(*self.__task_done).click()
+    def fourth_record_done_click(self):
+        self._driver.find_element(*self.__fourth_record).find_element(*self.__task_done).click()
 
-    def fifth_record_delete_click(self) -> bool:
-        self._driver.find_element(*self.__fifth_record)
-        self._driver.find_element(*self.__task_delete).click()
+    def fifth_record_delete_click(self):
+        # wait = WebDriverWait(self._driver, 10)
+        # wait.until(ec.presence_of_element_located(self.__fifth_record))
+        self._driver.find_element(*self.__fifth_record).find_element(*self.__task_delete).click()
 
 
        

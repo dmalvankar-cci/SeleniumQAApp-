@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
 from Tests import test_about, readExcelFile
+from globalConstants import tasksUrl
 from pageObject.login_page import loginPage
 from pageObject.tasks_page import tasksPage
 
@@ -29,7 +30,7 @@ def test_tasks_menu_verification(driver):
     tasks_page.hit_tasks()
 
     # Verify the URL
-    assert login_page.current_url == "https://login-app-iota.vercel.app/task"
+    assert login_page.current_url == tasksUrl
 
     # Verify the heading
     assert tasks_page.is_heading_text_displayed(), 'text is not there'
@@ -43,7 +44,7 @@ def test_tasks_menu_verification(driver):
 
 
 
-@pytest.mark.testme
+
 def test_addEmpty_task(test_tasks_menu_verification, driver):
 
 
@@ -105,7 +106,7 @@ def test_new_record_visibility(driver,test_add_first_task):
     """
     tasks_page = tasksPage(driver)
     # Verify the Instructions aren't displayed
-    assert tasks_page.instruction_not_found == False, "Instructions are not hidden"
+    assert tasks_page.is_instruction_visible == True, "Instructions are not hidden"
     # Verify the newly added record is shown below
     assert tasks_page.is_first_record_displayed(), "The first record is not displayed"
     assert tasks_page.first_record == "My first task", "record one is not proper"
@@ -212,9 +213,10 @@ def test_add_multiple_records(driver, test_action_icons_visibility):
     assert tasks_page.fifth_record == "My fifth task", "record five is not proper"
 
     # verify the instructions arent displayed
-    assert tasks_page.instruction_not_found == False, "Instructions are not hidden"
+    assert tasks_page.is_instruction_visible == True, "Instructions are not hidden"
 
 
+@pytest.mark.testme
 def test_actions_work_with_multiple_records(driver,test_add_multiple_records ):
     """
     Test : Verify edit, done, delete icons are working if multiple records 2-3 are present
@@ -248,4 +250,4 @@ def test_actions_work_with_multiple_records(driver,test_add_multiple_records ):
     tasks_page.fifth_record_delete_click()
 
     # Verify if the "My fifth task" is deleted from records
-    assert tasks_page.verify_deletion_for_fifth_record == False, "The record is not deleted"
+    assert tasks_page.verify_deletion_for_fifth_record == True, "The record is not deleted"

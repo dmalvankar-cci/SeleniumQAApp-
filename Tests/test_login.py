@@ -1,5 +1,7 @@
 # Import packages
 import pytest
+
+from globalConstants import dashboardUrl, loginUrl
 from pageObject.login_page import loginPage
 
 
@@ -18,7 +20,7 @@ def test_valid_login_pageObject(driver,username,password,loggedIn_msg):
     # Login to the page
     login_page.perform_login(username, password)
     # Validate logged in URL
-    assert login_page.current_url == "https://login-app-iota.vercel.app/dashboard"
+    assert login_page.current_url == dashboardUrl
     # Validate login message
     assert login_page.is_dashboarHeading_text_displayed(), 'Invalid Credentials'
     assert login_page.dashboarHeading_text == loggedIn_msg, "The login text is not matched"
@@ -40,7 +42,7 @@ def test_invalid_login_pageObject(driver,username,password,expectedErrorMsg):
     # Login to the page
     login_page.perform_login(username,password)
     # Validate logged in URL
-    assert login_page.current_url == "https://login-app-iota.vercel.app/login"
+    assert login_page.current_url == loginUrl
     # Validate login message
     assert login_page.is_loginError_lable_displayed(), 'Invalid Credentials'
     assert login_page.loginError_lable_text == expectedErrorMsg, "The login error is not matched"

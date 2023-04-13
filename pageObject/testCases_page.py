@@ -77,8 +77,9 @@ class testCasesPage:
 
 
     @property
-    def testSteps_are_gone(self):
-        return not ec.visibility_of_all_elements_located(self.__testSteps_div1)
+    def are_testSteps_visible(self):
+        wait = WebDriverWait(self._driver, 10)
+        return not wait.until(ec.visibility_of_all_elements_located(self.__testSteps_div1))
 
 
     def hit_testTwo(self):

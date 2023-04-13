@@ -1,5 +1,7 @@
 # Import packages
 import pytest
+
+from globalConstants import aboutUrl, dashboardUrl
 from pageObject.about_page import aboutPage
 from pageObject.home_page import homePage
 from pageObject.login_page import loginPage
@@ -29,13 +31,13 @@ def test_home_link_verify(driver, head_text, username, password):
     about_page.hit_about()
 
     # Verify other menu is opened
-    assert login_page.current_url == "https://login-app-iota.vercel.app/about"
+    assert login_page.current_url == aboutUrl
 
     # Click on the home link
     home_page.hit_home()
 
     # Validate URL
-    assert login_page.current_url == "https://login-app-iota.vercel.app/dashboard"
+    assert login_page.current_url == dashboardUrl
 
     # Validate login message
     assert login_page.is_dashboarHeading_text_displayed(), 'Invalid Credentials'
@@ -66,13 +68,13 @@ def test_logo_click_verify(driver, head_text, username, password):
 
 
     # Verify other menu is opened
-    assert login_page.current_url == "https://login-app-iota.vercel.app/about"
+    assert login_page.current_url == aboutUrl
 
     # Click on the logo
     home_page.hit_logo()
 
     # Verify the URL
-    assert login_page.current_url == "https://login-app-iota.vercel.app/dashboard"
+    assert login_page.current_url == dashboardUrl
 
 
 

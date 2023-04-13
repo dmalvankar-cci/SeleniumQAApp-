@@ -20,6 +20,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 
+from globalConstants import contactUrl
 from pageObject.contact_page import contactPage
 from pageObject.login_page import loginPage
 from pageObject.logout_page import logoutPage
@@ -54,7 +55,7 @@ def test_contact_menu_verification(driver):
     contact_page.hit_contact()
 
     # Verify the URL
-    assert login_page.current_url == "https://login-app-iota.vercel.app/contact"
+    assert login_page.current_url == contactUrl
 
     # Verify the heading
     assert contact_page.is_heading_text_displayed(), 'text is not there'

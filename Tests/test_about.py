@@ -1,5 +1,6 @@
 # Import packages
 from Tests import readExcelFile
+from globalConstants import aboutUrl
 from pageObject.about_page import aboutPage
 from pageObject.login_page import loginPage
 from pageObject.logout_page import logoutPage
@@ -31,7 +32,7 @@ def test_about_us_heading_verify(driver):
     about_page.hit_about()
 
     # Check the heading with URL
-    assert login_page.current_url == "https://login-app-iota.vercel.app/about"
+    assert login_page.current_url == aboutUrl
     assert about_page.is_heading_text_displayed(), 'text is not there'
     assert about_page.heading_text == head_text, "The heading text is not matched"
 

@@ -1,5 +1,4 @@
 import pytest
-
 from Tests import readExcelFile
 from pageObject.login_page import loginPage
 from pageObject.logout_page import logoutPage
@@ -39,4 +38,4 @@ def test_verify_contact_is_not_shown(driver, test_login_user):
            URL : https://login-app-iota.vercel.app
     """
     login_page = loginPage(driver)
-    assert login_page.contact_not_found == False, "Contact menu is displayed"
+    assert login_page.contact_not_found == True, "Contact menu is displayed"

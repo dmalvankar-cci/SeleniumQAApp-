@@ -1,4 +1,6 @@
 import pytest
+
+from globalConstants import testcasesUrl
 from pageObject.login_page import loginPage
 from pageObject.testCases_page import testCasesPage
 from Tests import test_about
@@ -18,7 +20,7 @@ def test_verify_testcases_menu(driver):
 
     # Verify the URL
     login_page = loginPage(driver)
-    assert login_page.current_url == "https://login-app-iota.vercel.app/test-cases"
+    assert login_page.current_url == testcasesUrl
 
     # Verify the 4 test cases are shown
     assert testCases_page.is_test_one_is_displayed(), "Test first isnt displayed"
@@ -55,7 +57,7 @@ def test_verify_testCases_collapse(driver, test_verify_testCases_expand):
     testCases_page.testSteps_one_collapse()
 
     # Verify if the testcase is collapsed
-    assert testCases_page.testSteps_are_gone == False , "The teststeps are gone"
+    assert testCases_page.are_testSteps_visible == False, "The teststeps are gone"
 
 
 def test_validate_expand_collapse(driver, test_verify_testCases_expand):
@@ -69,7 +71,7 @@ def test_validate_expand_collapse(driver, test_verify_testCases_expand):
     testCases_page.hit_testTwo()
 
     # Verify if the first test is collapsed and second test case is expanded
-    assert testCases_page.testSteps_are_gone == False , "The teststeps are gone"
+    assert testCases_page.are_testSteps_visible == False, "The teststeps are gone"
     assert testCases_page.total_testSteps_verify_for_TC2 == 14, "The teststeps count is wrong"
 
 
