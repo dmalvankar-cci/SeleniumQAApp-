@@ -1,8 +1,5 @@
 from openpyxl.reader.excel import load_workbook
 
-
-
-
 def read_data(rowNum, colNum):
         wrkBk = load_workbook("automation_username_password.xlsx")
         sheet = wrkBk.get_sheet_by_name("Sheet1")
