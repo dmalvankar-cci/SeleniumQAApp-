@@ -1,3 +1,4 @@
+import time
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
@@ -15,7 +16,7 @@ class tasksPage:
 
     __task_textBox = (By.ID, 'task-input')
     __task_addBtn = (By.CSS_SELECTOR, "button[class='btn btn-primary mb-2 ml-2 col-2']")
-    __first_record = (By.XPATH, "//div[@class='border border-1 row m-2 p-1 rounded align-items-center bg-light']")
+    __first_record = (By.XPATH, "//div[@class='col']/div[@id='mx-2 border border-5']/div[1]")
 
     __third_record = (By.XPATH, "//div[@class='col']/div[@id='mx-2 border border-5']/div[2]")
     __fourth_record = (By.XPATH, "//div[@class='col']/div[@id='mx-2 border border-5']/div[3]")
@@ -24,14 +25,18 @@ class tasksPage:
 
     __task_allIcons = (By.XPATH, "//div[@class='border border-1 row m-2 p-1 rounded align-items-center bg-light']//div[@class='col']//*[name()='svg']")
     __task_edit = (By.XPATH, "//*[name()='path' and contains(@d,'M880 836H1')]")
+    __task_edit_third_record = (By.XPATH, "(//*[name()='path'])[6]")
     __task_done = (By.XPATH, "//*[name()='path' and contains(@d,'M512 64C26')]")
+    __task_done_fourth_record = (By.XPATH, "(//*[name()='path'])[10]")
     __task_delete = (By.XPATH, "//*[name()='path' and contains(@d,'M864 256H7')]")
+    __task_delete_fifth_record = (By.XPATH, "(//*[name()='path'])[14]")
 
 
     __save_btn = (By.CSS_SELECTOR, "button[class='btn btn-secondary mb-2 ml-2 col-2']")
     __the_updated_text = (By.XPATH, "//div[contains(text(),'My Second Task')]")
+    __fourth_record_text = (By.XPATH, "//div[contains(text(),'My fourth task')]")
 
-    __the_updated_text_for_third_record = (By.XPATH, "//div[contains(text(),'My third-edited task')]")
+
 
 
 
@@ -117,24 +122,29 @@ class tasksPage:
 
     def updated_text_is_displayed_for_third_record(self):
         wait = WebDriverWait(self._driver, 10)
-        wait.until(ec.presence_of_element_located(self.__the_updated_text_for_third_record))
-        check_updated_task = self._driver.find_element(*self.__the_updated_text_for_third_record)
+        wait.until(ec.presence_of_element_located(self.__third_record))
+        check_updated_task = self._driver.find_element(*self.__third_record)
         return check_updated_task.is_displayed()
 
     @property
     def updated_text_for_third_record(self):
-        updated_task_text = self._driver.find_element(*self.__the_updated_text_for_third_record).text
+        updated_task_text = self._driver.find_element(*self.__third_record).text
         return updated_task_text
 
     def click_done(self):
        self._driver.find_element(*self.__task_done). click()
 
+
     def verify_strikethrough(self):
-        updated_task_text = self._driver.find_element(*self.__the_updated_text).value_of_css_property("text-decoration")
+        updated_task_text = self._driver.find_element(*self.__the_updated_text).value_of_css_property("text-decoration-line")
         return updated_task_text
+
+
     def verify_strikethrough_for_four_record(self):
-        updated_task_text = self._driver.find_element(*self.__the_updated_text_for_third_record).value_of_css_property("text-decoration")
-        return updated_task_text
+        wait = WebDriverWait(self._driver, 10)
+        wait.until(ec.presence_of_element_located(self.__fourth_record_text))
+        done_fourth_record = self._driver.find_element(*self.__fourth_record_text).value_of_css_property("text-decoration-line")
+        return done_fourth_record
 
     def click_delete(self):
         self._driver.find_element(*self.__task_delete).click()
@@ -185,16 +195,22 @@ class tasksPage:
         return record_five
 
     def third_record_edit_click(self):
-        self._driver.find_element(*self.__third_record).find_element(*self.__task_edit).click()
+        self._driver.find_element(*self.__task_edit_third_record).click()
+
+
 
 
     def fourth_record_done_click(self):
-        self._driver.find_element(*self.__fourth_record).find_element(*self.__task_done).click()
+        self._driver.find_element(*self.__task_done_fourth_record).click()
+        # Count = self._driver.find_elements(*self.__task_done)
+        # for idx, val in enumerate(Count):
+        #     if idx == 2:
+        #         self._driver.find_element(*self.__task_done).click()
+
+
 
     def fifth_record_delete_click(self):
-        # wait = WebDriverWait(self._driver, 10)
-        # wait.until(ec.presence_of_element_located(self.__fifth_record))
-        self._driver.find_element(*self.__fifth_record).find_element(*self.__task_delete).click()
+        self._driver.find_element(*self.__task_delete_fifth_record).click()
 
 
        

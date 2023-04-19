@@ -1,3 +1,5 @@
+import time
+
 import pytest
 from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support import expected_conditions
@@ -168,7 +170,7 @@ def test_verify_done_record(driver, test_verify_editing_record):
     tasks_page.click_done()
 
     # Verify if the record is strikethrough
-    assert tasks_page.verify_strikethrough() == "line-through rgb(33, 37, 41)", "The strikethrough is not done"
+    assert tasks_page.verify_strikethrough() == "line-through", "The strikethrough is not done"
 
 
 
@@ -255,7 +257,8 @@ def test_actions_work_with_multiple_records(driver,test_add_multiple_records ):
 
     # Verify if the "My fourth task" got strikethrough
     tasks_page.verify_strikethrough_for_four_record()
-    assert tasks_page.verify_strikethrough_for_four_record() == "line-through rgb(33, 37, 41)", "The strikethrough is not done"
+
+    assert tasks_page.verify_strikethrough_for_four_record() == "line-through", "The strikethrough is not done"
 
     # delete the "My fifth task"
     tasks_page.fifth_record_delete_click()
