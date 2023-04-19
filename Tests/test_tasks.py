@@ -58,6 +58,17 @@ def test_addEmpty_task(test_tasks_menu_verification, driver):
 
     # Remove the "Fill today's time sheet" from the text field
     tasks_page.remove_placeholder()
+    
+    """
+    # For chrome
+    # tasks_page.pass_task('test')
+    
+   
+    # Hit the add button with the "test" text field
+    # tasks_page.click_add()
+    """
+
+
 
     # Hit the add button with the empty text field
     tasks_page.click_add()

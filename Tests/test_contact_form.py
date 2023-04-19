@@ -166,4 +166,16 @@ def test_verify_table_records(driver, test_contact_menu_verification, test_verif
     assert contact_page.table_rows_count == initial_table_rows+1, "The row count is not matched"
 
 
+def test_table_record(driver, test_verify_form_submission):
+    """
+        Test : Verify the data inside the table
+        URL : https://login-app-iota.vercel.app/contact
+    """
+    contact_page = contactPage(driver)
+    # contact_page.table_records_verification()
+    assert contact_page.table_records_verification == "test ignore", "record is not matched"
+
+
+
+
 

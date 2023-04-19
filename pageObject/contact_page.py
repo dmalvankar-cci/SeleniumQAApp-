@@ -25,7 +25,12 @@ class contactPage:
     __table_rows = (By.XPATH, "//*[@class= 'table']/tbody/tr")
     __table_body = (By.XPATH, "//tbody")
 
+    # __new_row = (By.XPATH, "//tbody/tr[2]")
+    __table_cols = (By.XPATH, "//*[@class= 'table']/thead/tr/th")
+
+
     def __init__(self, driver: WebDriver):
+        self.values = None
         self._driver = driver
 
 
@@ -96,6 +101,21 @@ class contactPage:
     @property
     def table_rows_count(self):
         return len(self._driver.find_elements(*self.__table_rows))
+
+
+    @property
+    def table_records_verification(self):
+        rowsCount = len(self._driver.find_elements(*self.__table_rows))
+        colsCount = len(self._driver.find_elements(*self.__table_cols))
+        for r in range(rowsCount, rowsCount+1):
+            for c in range(1, colsCount+1):
+                values = By.XPATH, "//*[@class= 'table']/tbody/tr["+str(r)+"]/td["+str(c)+"]"
+                values_text = self._driver.find_element(*values).text
+                return values_text
+
+
+
+
 
 
 
